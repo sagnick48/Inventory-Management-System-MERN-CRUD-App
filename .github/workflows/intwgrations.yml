@@ -17,36 +17,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-
+          node-version: 24
       - name: Install backend dependencies
         working-directory: Backend
         run: npm ci
-
       - name: Install frontend dependencies
         working-directory: Frontend/inventory_management_system
         run: npm ci
-
       - name: Start backend
         working-directory: Backend
-        run: |
-          npm run server > /tmp/backend.log 2>&1 &
-
+        run: npm run server > /tmp/backend.log 2>&1 &
       - name: Start frontend
         working-directory: Frontend/inventory_management_system
-        run: |
-          npm start > /tmp/frontend.log 2>&1 &
-
+        run: npm start > /tmp/frontend.log 2>&1 &
       - name: Wait for applications
         run: sleep 35
-
       - name: Check backend
         run: curl -f http://localhost:3001/
-
       - name: Check frontend
         run: curl -f http://localhost:3000/
